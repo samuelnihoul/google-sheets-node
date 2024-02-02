@@ -23,7 +23,7 @@ app.post("/", async (req, res) => {
   // Instance of Google Sheets API
   const googleSheets = google.sheets({ version: "v4", auth: client });
 
-  const spreadsheetId = "1J5OesnSTJCgLTTA0hQ_QSk_UPVK1nwRTEkvvRHHrEqM";
+  const spreadsheetId = "1iRG8gfYh_AwWRrOnQ3DvwuIdBK0KYkBEorwThQ4lqZ4";
 
   // Get metadata about spreadsheet
   const metaData = await googleSheets.spreadsheets.get({
@@ -37,7 +37,8 @@ app.post("/", async (req, res) => {
     spreadsheetId,
     range: "Sheet1!A:A",
   });
-
+  console.log(request, name)
+  console.log("mod", req.body)
   // Write row(s) to spreadsheet
   await googleSheets.spreadsheets.values.append({
     auth,
@@ -45,7 +46,7 @@ app.post("/", async (req, res) => {
     range: "Sheet1!A:B",
     valueInputOption: "USER_ENTERED",
     resource: {
-      values: [[request, name]],
+      values: [["a", 'a']],
     },
   });
 
