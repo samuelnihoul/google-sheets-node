@@ -1,9 +1,10 @@
 const express = require("express");
 const { google } = require("googleapis");
-
+const bodyparse = require("body-parser")
 const app = express();
 app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyparse.json())
+app.use(bodyparse.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -46,7 +47,7 @@ app.post("/", async (req, res) => {
     range: "Sheet1!A:B",
     valueInputOption: "USER_ENTERED",
     resource: {
-      values: [["a", 'a']],
+      values: [[request, name]],
     },
   });
 
