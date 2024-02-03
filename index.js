@@ -7,11 +7,11 @@ app.use(bodyparse.json())
 app.use(bodyparse.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.send(getData)
 });
 
 app.post("/", async (req, res) => {
-  const { request, name } = req.body;
+  const { sheet, data } = req.body;
 
   const auth = new google.auth.GoogleAuth({
     keyFile: "credentials.json",
@@ -24,7 +24,7 @@ app.post("/", async (req, res) => {
   // Instance of Google Sheets API
   const googleSheets = google.sheets({ version: "v4", auth: client });
 
-  const spreadsheetId = "1iRG8gfYh_AwWRrOnQ3DvwuIdBK0KYkBEorwThQ4lqZ4";
+  const spreadsheetId = sheet;
 
   // Get metadata about spreadsheet
   const metaData = await googleSheets.spreadsheets.get({
@@ -38,16 +38,14 @@ app.post("/", async (req, res) => {
     spreadsheetId,
     range: "Sheet1!A:A",
   });
-  console.log(request, name)
-  console.log("mod", req.body)
   // Write row(s) to spreadsheet
   await googleSheets.spreadsheets.values.append({
     auth,
     spreadsheetId,
-    range: "Sheet1!A:B",
+    range: "Sheet1!A:Z",
     valueInputOption: "USER_ENTERED",
     resource: {
-      values: [[request, name]],
+      values: [data],
     },
   });
 
